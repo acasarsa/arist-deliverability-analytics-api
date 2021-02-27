@@ -15,6 +15,12 @@ module Api
         end
       end
 
+      def terminate 
+        device = Device.find(params[:id])
+        device.update(disabled_at: Time.now)
+        render json: device
+      end
+
       private
 
       def device_params

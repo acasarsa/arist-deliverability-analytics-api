@@ -3,6 +3,9 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do 
       post '/register', to: 'devices#register', as: 'register_device'
+      post '/alive', to: 'devices#alive', as: 'heartbeat'
+      post '/report', to: 'devices#report'
+      patch '/terminate', to: 'devices#terminate', as: 'disable_device'
       resources :devices, only: [:index] 
     end
   end
