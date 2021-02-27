@@ -15,8 +15,6 @@ module Api
         end
       end
 
-
-
       private
 
       def device_params
