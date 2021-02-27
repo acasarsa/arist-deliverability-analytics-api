@@ -21,6 +21,16 @@ module Api
         render json: device
       end
 
+      def alive 
+        device = Device.find(params[:device_id])
+        if !device.disabled_at
+          heartbeat = Heartbeat.create(device_id: device.id)
+          render json: heartbeat
+        else 
+          render json: {"error": "This divice is disabled"}, status: 500
+        end
+      end
+
       private
 
       def device_params
