@@ -1,10 +1,14 @@
 module Api 
   module V1
     class DevicesController < ApplicationController
-      def index # remove
+      ######### remove index for production ########
+      # this is here for endpoint testing in Postman | also remove route
+      def index 
         devices = Device.all
         render json: devices, include: [:heartbeats, :reports]
       end
+
+      ######### production ready controller ########
 
       def register
           device = Device.create!(device_params)
@@ -23,7 +27,7 @@ module Api
           heartbeat = Heartbeat.create(alive_params)
           render json: heartbeat, status: 200
         else 
-          render json: {"error": "This divice is disabled"}, status: 500
+          render json: {"error": "This device is disabled"}, status: 500
         end
       end
 
@@ -33,7 +37,7 @@ module Api
           report = Report.create(report_params)
           render json: report, status: 200
         else 
-          render json: {"error": "This divice is disabled"}, status: 500
+          render json: {"error": "This device is disabled"}, status: 500
         end
       end
 

@@ -6,7 +6,10 @@ Rails.application.routes.draw do
       post '/alive', to: 'devices#alive', as: 'heartbeat'
       post '/report', to: 'devices#report'
       patch '/terminate', to: 'devices#terminate', as: 'disable_device'
-      resources :devices, only: [:index] 
+      
+      ######### remove index route for production ########
+      # this is here for endpoint testing in Postman 
+      resources :devices, only: [:index] # remove for production 
     end
   end
 
