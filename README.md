@@ -17,7 +17,21 @@ rake db:create
 rake db:migrate
 rails s
 ```
+## Run Tests
+
+``` 
+bundle install
+rake db:create
+RAILS_ENV=test rake db:migrate
+rspec
+
+```
 
 ## Test Endpoints with Postman 
 [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/35cf2cc993f6d1f29e89)
-Run the register_device POST request then use the device.id to send POST requests to 
+
+### Postman Collection Docs for this API
+
+Since this is a development environment you can access the /devices route to see all the changes you make! The /devices route is also where you'll need to look to get the device_id for your other routes. 
+
+Simply copy the id: uuid sans quotes from the /devices route and paste it into the query parmas value for device_id. You'll see a big **INSERT DEVICE ID HERE**. 
