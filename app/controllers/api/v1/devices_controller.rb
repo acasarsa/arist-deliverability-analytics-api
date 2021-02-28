@@ -1,14 +1,14 @@
 module Api 
   module V1
     class DevicesController < ApplicationController
-      ######### remove index for production ########
-      # this is here for endpoint testing in Postman | also remove route
+      ######### remove index action for production ########
+      # this is here for endpoint testing in Postman | also remove associated route
       def index 
         devices = Device.all
         render json: devices, include: [:heartbeats, :reports]
       end
 
-      ######### production ready controller ########
+      ######### production ready controller starts here ########
 
       def register
           device = Device.create!(device_params)
