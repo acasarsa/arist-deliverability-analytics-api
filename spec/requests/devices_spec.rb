@@ -1,53 +1,29 @@
 require 'rails_helper'
 
-RSpec.describe "Devices", type: :request do
-  describe "POST /api/v1/register" do 
-    it "creates device with status 200 and responds to JSON by default" do 
-      post "/api/v1/register", params: { device: { phone_number: "1231231234", carrier: "Cell-ONE"}}
-        expect(response).to have_http_status(200)
-        expect(response.content_type).to eq("application/json; charset=utf-8")
-    end
-  end
-
-  describe "PATCH /api/v1/terminate" do 
-    it "updates disabled_at to current timestamp" do
-      device = Device.create(phone_number: "+1231231234", carrier: "XCL", disabled_at: nil)
-      patch '/api/v1/terminate', params: { id: device.id, disabled_at: Time.now }
-      expect(response).to have_http_status(200)
-    end
-  end
-
-  describe "POST /api/v1/alive" do 
-    it "creates a heartbeat with status 200 when device is not disabled" do 
-      device = Device.create(phone_number: "+12231231234", carrier: "XCL", disabled_at: nil)
-      post '/api/v1/alive', params: {device_id: device.id}
-      expect(response).to have_http_status(200)
-    end
-
-    it "throws an error and returns status 500 if device is disabled" do 
-      device = Device.create(phone_number: "+12231231234", carrier: "XCL", disabled_at: Time.now)
-      post '/api/v1/alive', params: {device_id: device.id}
-      expect(response).to have_http_status(500)
-    end
-
-    describe "POST /api/v1/report" do
-      it "creates a report with status 200 when device is not disabled and allows for utf-8 text" do 
-        device = Device.create(phone_number: "+12231231234", carrier: "XCL", disabled_at: nil)
-        post '/api/v1/alive', params: {device_id: device.id, sender: '+12231231234', message: 'send dog pics 🐕🐕🐕'}
-        expect(response).to have_http_status(200)
-      end
-
-      it "throws an error and returns status 500 if device is disabled" do 
-        device = Device.create(phone_number: "+12231231234", carrier: "XCL", disabled_at: Time.now)
-        post '/api/v1/alive', params: {device_id: device.id, sender: '+12231231234', message: 'send dog pics'}
-        expect(response).to have_http_status(500)
+RSpec.describe "Devices", type: :request do 
+  context "when POST request made to /register endpoint" do 
+    context "when params are valid" do
+      it "is should create new device with content type of json" do 
+        post "/api/v1/register", params: { device: { phone_number: "+14015746041", carrier: "Cell-ONE"}}
+        post "/api/v1/register", params: { device: { phone_number: "+14015746041", carrier: "Vodafone"}}
+          expect(Device.count).to eq(2)
+          expect(response).to have_http_status(200)
+          expect(response.content_type).to eq("application/json; charset=utf-8")
       end
     end
-
-    # make test for the correct phone number format 
-    # see about fixing the test for device creation
-    # make the first tests neater like these ones
   end
 
-
+  context "when PATCH request sent to /terminate endpoint" do 
+    context "updates disabled_at to current timestamp" do
+      it "should not be nil after success" do 
+        device = Device.create!(phone_number: "+14015746041", carrier: "XCL", disabled_at: nil)
+        patch '/api/v1/terminate', params: { id: device.id }
+        updated_device = Device.find_by_id(device.id)
+        expected = !nil
+        actual = updated_device.disabled_at != nil
+        expect(actual).to eq(expected)
+        expect(response).to have_http_status(200)
+      end
+    end
+  end
 end
