@@ -1,18 +1,27 @@
 module Api 
   module V1
     class DevicesController < ApplicationController
-      ######### remove index action for production ########
-      # this is here for endpoint testing in Postman | also remove associated route
+######################################################################
+########### I added the index action and associated endpoint 
+########### to test my endpoints via Postman
+######################################################################
+
       def index 
         devices = Device.all
         render json: devices, include: [:heartbeats, :reports]
       end
-
-      ######### production ready controller starts here ########
+      
+######################################################################
+########### expected controller actions for challenge ################
+######################################################################
 
       def register
-          device = Device.create!(device_params)
-          render json: device, status: 200
+          device = Device.create(device_params)
+          if device.valid? 
+            render json: device, status: 200
+          else 
+            render json: {"error": device.errors.full_messages, status: 500}
+          end
       end
 
       def terminate 
@@ -24,10 +33,10 @@ module Api
       def alive 
         device = Device.find(params[:device_id])
         if !device.disabled_at
-          heartbeat = Heartbeat.create(alive_params)
+          heartbeat = Heartbeat.create!(alive_params)
           render json: heartbeat, status: 200
         else 
-          render json: {"error": "This device is disabled"}, status: 500
+          render json: {"error": "This device is disabled", status: 500}
         end
       end
 
@@ -35,9 +44,13 @@ module Api
         device = Device.find(params[:device_id])
         if !device.disabled_at
           report = Report.create(report_params)
-          render json: report, status: 200
+          if report.valid? 
+            render json: report, status: 200
+          else 
+            render json: {"error": report.errors.full_messages[0], status: 500} # only 1 validation so returning the only error
+          end
         else 
-          render json: {"error": "This device is disabled"}, status: 500
+          render json: {"error": "This device is disabled", status: 500}
         end
       end
 
