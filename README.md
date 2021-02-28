@@ -34,6 +34,6 @@ rspec
 
 Since this is a development environment you can access the /devices route to see all the changes you make! The /devices route is also where you'll need to look to get the device_id for your other routes. 
 
-Simply copy the id: uuid sans quotes of course from the /devices route and paste it into the query parmas value for device_id. You'll see a big **INSERT DEVICE ID HERE**. 
+Simply copy the id's uuid value sans quotes from the /devices route and paste it into the query parmas value for device_id. You'll see a big **INSERT DEVICE ID HERE**. 
 
-For those not familiar with uuid's it will look like something like this `5c4b60ad-f00d-4f89-9725-be16f84ecb9f`
+For those not familiar with uuid's it will look like something like this id: `5c4b60ad-f00d-4f89-9725-be16f84ecb9f`
