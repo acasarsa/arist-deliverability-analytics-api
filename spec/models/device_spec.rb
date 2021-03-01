@@ -3,7 +3,8 @@ require 'rails_helper'
 RSpec.describe Device, type: :model do
 
   it "is valid with valid attributes" do
-    device = Device.create!(phone_number: '+14015746041', carrier: 'ABC-Cell')
+    device = Device.new(phone_number: '+14015746041', carrier: 'ABC-Cell')
+    device.validate
     expect(device).to be_valid
   end
 
