@@ -10,7 +10,7 @@ module Api
         devices = Device.all
         render json: devices, include: [:heartbeats, :reports]
       end
-      
+
 ######################################################################
 ########### expected controller actions for challenge ################
 ######################################################################
@@ -20,7 +20,7 @@ module Api
           if device.valid? 
             render json: device, status: 200
           else 
-            render json: {"error": device.errors.full_messages, status: 500}
+            render json: {"error": device.errors.full_messages}, status: 500
           end
       end
 
@@ -33,10 +33,10 @@ module Api
       def alive 
         device = Device.find(params[:device_id])
         if !device.disabled_at
-          heartbeat = Heartbeat.create!(alive_params)
+          heartbeat = Heartbeat.create(alive_params)
           render json: heartbeat, status: 200
         else 
-          render json: {"error": "This device is disabled", status: 500}
+          render json: {"error": "This device is disabled"}, status: 500
         end
       end
 
@@ -47,10 +47,10 @@ module Api
           if report.valid? 
             render json: report, status: 200
           else 
-            render json: {"error": report.errors.full_messages[0], status: 500} # only 1 validation so returning the only error
+            render json: {"error": report.errors.full_messages[0]}, status: 500 # only 1 validation so rendering the only error
           end
         else 
-          render json: {"error": "This device is disabled", status: 500}
+          render json: {"error": "This device is disabled"}, status: 500
         end
       end
 

@@ -7,9 +7,11 @@ Rails.application.routes.draw do
       post '/report', to: 'devices#report'
       patch '/terminate', to: 'devices#terminate', as: 'disable_device'
       
-      ######### remove index route for production ########
-      # this is here for endpoint testing in Postman 
-      resources :devices, only: [:index] # remove for production 
+######################################################################
+########### I added the index route and associated controller action 
+########### to test my endpoints via Postman
+######################################################################
+      resources :devices, only: [:index]
     end
   end
 

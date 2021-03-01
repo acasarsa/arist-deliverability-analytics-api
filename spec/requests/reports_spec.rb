@@ -20,5 +20,14 @@ RSpec.describe "Reports", type: :request do
         expect(response).to have_http_status(500)
       end
     end
+
+    context "when sender's phone number is invalid" do 
+      it "renders error message and has status code 500" do 
+        device = Device.create!(phone_number: "+14015746041", carrier: "Verizon")
+        post '/api/v1/report', params: {device_id: device.id, sender: '555-555-5555', message: 'send dog pics 🐕🐕🐕'}
+        expect(response.body).to include("error")
+        expect(response).to have_http_status(500)
+      end
+    end
   end
 end

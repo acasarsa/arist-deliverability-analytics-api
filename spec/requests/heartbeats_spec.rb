@@ -15,7 +15,8 @@ RSpec.describe "Heartbeats", type: :request do
     context "when device is disabled" do 
       it "endpoint cannot be reached" do 
         device = Device.create(phone_number: "+14015746041", carrier: "XCL", disabled_at: Time.now)
-        post '/api/v1/alive', params: {device_id: device.id}
+        updated_device = Device.find_by_id(device.id)
+        post '/api/v1/alive', params: {device_id: updated_device.id}
         expect(response).to have_http_status(500)
       end
     end
