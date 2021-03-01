@@ -18,7 +18,7 @@ RSpec.describe Device, type: :model do
 
   context 'with non-e164 formatting' do
     context 'without country code' do
-      it 'should parse into e164 format with default country code "US"' do 
+      it 'should parse into e164 format with default country code for "US"' do 
         device = Device.create!(phone_number: '(401) 574-6041', carrier: 'Verizon')
         actual = device.phone_number
         expected = '+14015746041'
